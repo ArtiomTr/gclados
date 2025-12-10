@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char *gcladosToEqualStringExpected(const char *value, const char *options, bool pass) {
+char *gcladosToEqualStringExpected(const char **value, const char *options, bool pass) {
     char *output = calloc(strlen(options) + 5, sizeof(char));
 
     sprintf(output, pass ? "not %s" : "%s", options);
@@ -16,19 +16,19 @@ char *gcladosToEqualStringExpected(const char *value, const char *options, bool 
     return output;
 }
 
-char *gcladosToEqualStringReceived(const char *value, const char *options, bool pass) {
+char *gcladosToEqualStringReceived(const char **value, const char *options, bool pass) {
     if(pass) {
         return NULL;
     } else {
-        char *copy = calloc(strlen(value), sizeof(char));
-        strcpy(copy, value);
+        char *copy = calloc(strlen(*value), sizeof(char));
+        strcpy(copy, *value);
 
         return copy;
     }
 }
 
-bool gcladosToEqualStringPredicate(StatementContext context, const char *value, const char *options) {
-    return strcmp(value, options) == 0;
+bool gcladosToEqualStringPredicate(StatementContext context, const char **value, const char *options) {
+    return strcmp(*value, options) == 0;
 }
 
 GcladosPredicate gcladosToEqualString(char *string) {
